@@ -1,4 +1,8 @@
-export async function get(url: string) {
+// Generic "get" function.
+// "Type Casting" takes place right inside the 'get' function to "force" TypeScript
+// to treat data as type T.
+
+export async function get<T>(url: string) {
 	const response = await fetch(url, {
 		method: 'GET',
 	});
@@ -11,5 +15,5 @@ export async function get(url: string) {
 
 	const data = (await response.json()) as unknown; // type safety -> 'unknown' forces us to explicity set our own types.
 
-	return data;
+	return data as T; // "Type Casting" takes place right inside the 'get' function to "force" TypeScript to treat data as type T.
 }

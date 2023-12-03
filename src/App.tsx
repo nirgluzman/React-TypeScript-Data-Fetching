@@ -34,7 +34,10 @@ function App() {
 		async function fetchPosts() {
 			// const rawData = (await get(
 			// 	'https://jsonplaceholder.typicode.com/posts'
-			// )) as RawDataBlogPost[];
+			// )) as RawDataBlogPost[]; // 'as' for type casting.
+
+			// // using a "generic" get function with type casting.
+			// const rawData = await get<RawDataBlogPost[]>('https://jsonplaceholder.typicode.com/posts');
 
 			try {
 				const rawData = await get('https://jsonplaceholder.typicode.com/posts');
