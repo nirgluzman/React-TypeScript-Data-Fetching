@@ -21,3 +21,7 @@ https://tanstack.com/query/latest
 Zod - data validation library
 https://zod.dev/
 https://github.com/colinhacks/zod
+
+
+{JSON} Placeholder - free fake API for testing and prototyping
+https://jsonplaceholder.typicode.com/
