@@ -22,6 +22,7 @@ Zod - data validation library
 https://zod.dev/
 https://github.com/colinhacks/zod
 https://www.udemy.com/course/react-typescript-the-practical-guide/learn/lecture/40470776#questions/20931846/
+https://www.udemy.com/course/react-typescript-the-practical-guide/learn/lecture/40470748#questions/20931846/
 When fetching data, it can be a good idea to parse & validate the fetched data to check 
 if it's in line with our data structure expectations.
 Zod is a great library for doing that valiation, because this library embraces TypeScript and 

@@ -2,7 +2,12 @@
 // "Type Casting" takes place right inside the 'get' function to "force" TypeScript
 // to treat data as type T.
 
-export async function get<T>(url: string) {
+// adjusting the function to accept a second parameter, zodSchema, of type ZodType.
+// https://www.udemy.com/course/react-typescript-the-practical-guide/learn/lecture/40470748#questions/20931846/
+
+import {z} from 'zod';
+
+export async function get<T>(url: string, zodSchema: z.ZodType<T>) {
 	const response = await fetch(url, {
 		method: 'GET',
 	});
@@ -15,5 +20,14 @@ export async function get<T>(url: string) {
 
 	const data = (await response.json()) as unknown; // type safety -> 'unknown' forces us to explicity set our own types.
 
-	return data as T; // "Type Casting" takes place right inside the 'get' function to "force" TypeScript to treat data as type T.
+	// return data as T; // "Type Casting" takes place right inside the 'get' function to "force" TypeScript to treat data as type T.
+
+	try {
+		return zodSchema.parse(data); // use Zod schema to parse the received response.
+	} catch (error) {
+		// Zod throws an error if parsing the data fails.
+		// Therefore, TypeScript knows that if it succeeds, the data will be a value of the type defined by the Zod schema.
+		// I.e., TypeScript will narrow the type to be of that type.
+		throw new Error('Invalid data received from server!');
+	}
 }

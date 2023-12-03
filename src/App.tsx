@@ -39,27 +39,43 @@ function App() {
 			// // using a "generic" get function with type casting.
 			// const rawData = await get<RawDataBlogPost[]>('https://jsonplaceholder.typicode.com/posts');
 
-			try {
-				const rawData = await get('https://jsonplaceholder.typicode.com/posts');
+			// try {
+			// 	const rawData = await get('https://jsonplaceholder.typicode.com/posts');
 
-				// Type casting with "as" is NOT needed!
-				// Instead, here, TypeScript "knows" that parsedData will be an array with objects as defined by the above schema.
-				// It will throw an error if rawData is not in line with the defined schema (e.g., if a property is missing or of a different value type).
-				// This is why we use try/catch block.
-				const parsedData = expectedResponseDataSchema.parse(rawData);
+			// 	// Type casting with "as" is NOT needed!
+			// 	// Instead, here, TypeScript "knows" that parsedData will be an array with objects as defined by the above schema.
+			// 	// It will throw an error if rawData is not in line with the defined schema (e.g., if a property is missing or of a different value type).
+			// 	// This is why we use try/catch block.
+			// 	const parsedData = expectedResponseDataSchema.parse(rawData);
 
-				const blogPosts: BlogPost[] = parsedData.map((rawPost) => {
-					return {
-						id: rawPost.id,
-						title: rawPost.title,
-						text: rawPost.body,
-					};
-				});
+			// 	const blogPosts: BlogPost[] = parsedData.map((rawPost) => {
+			// 		return {
+			// 			id: rawPost.id,
+			// 			title: rawPost.title,
+			// 			text: rawPost.body,
+			// 		};
+			// 	});
 
-				setFetchPosts(blogPosts);
-			} catch (error) {
-				console.log(error);
-			}
+			// 	setFetchPosts(blogPosts);
+			// } catch (error) {
+			// 	console.log(error);
+			// }
+
+			// zodSchema validation is done inside 'get' function.
+			const data = await get(
+				'https://jsonplaceholder.typicode.com/posts',
+				z.array(rawDataBlogPostSchema)
+			);
+
+			const blogPosts: BlogPost[] = data.map((rawPost) => {
+				return {
+					id: rawPost.id,
+					title: rawPost.title,
+					text: rawPost.body,
+				};
+			});
+
+			setFetchPosts(blogPosts);
 		}
 
 		fetchPosts();
