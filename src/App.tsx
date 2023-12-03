@@ -3,6 +3,8 @@ import {useEffect, useState, type ReactNode} from 'react';
 import {z} from 'zod';
 
 import BlogPosts, {type BlogPost} from './components/BlogPosts.tsx';
+import ErrorMessage from './components/ErrorMessage.tsx';
+
 import {get} from './util/http.ts';
 import fetchingImg from './assets/data-fetching.png';
 
@@ -30,6 +32,7 @@ const expectedResponseDataSchema = z.array(rawDataBlogPostSchema);
 function App() {
 	const [fetchedPosts, setFetchPosts] = useState<BlogPost[]>();
 	const [isFetching, setIsFetching] = useState<boolean>(false);
+	const [error, setError] = useState<string>();
 
 	useEffect(() => {
 		async function fetchPosts() {
@@ -64,21 +67,29 @@ function App() {
 			// }
 
 			// zodSchema validation is done inside 'get' function.
-			const data = await get(
-				'https://jsonplaceholder.typicode.com/posts',
-				z.array(rawDataBlogPostSchema)
-			);
+			try {
+				const data = await get(
+					'https://jsonplaceholder.typicode.com/posts',
+					z.array(rawDataBlogPostSchema)
+				);
 
-			const blogPosts: BlogPost[] = data.map((rawPost) => {
-				return {
-					id: rawPost.id,
-					title: rawPost.title,
-					text: rawPost.body,
-				};
-			});
+				const blogPosts: BlogPost[] = data.map((rawPost) => {
+					return {
+						id: rawPost.id,
+						title: rawPost.title,
+						text: rawPost.body,
+					};
+				});
+				setFetchPosts(blogPosts);
+			} catch (error) {
+				// setError((error as Error).message);
+
+				if (error instanceof Error) {
+					setError(error.message);
+				}
+			}
 
 			setIsFetching(false);
-			setFetchPosts(blogPosts);
 		}
 
 		fetchPosts();
@@ -91,6 +102,10 @@ function App() {
 
 	if (isFetching) {
 		content = <p id='loading-fallback'>Fetching posts...</p>;
+	}
+
+	if (error) {
+		content = <ErrorMessage text={error} />;
 	}
 
 	return (
