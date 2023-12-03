@@ -12,3 +12,12 @@ git@github.com:nirgluzman/React-TypeScript-Data-Fetching.git
 React with Vite, https://vitejs.dev/guide/
 npm create vite@latest react-ts-basic
 npm install
+
+
+TanStack Query - library for data fetching in React apps
+https://tanstack.com/query/latest
+
+
+Zod - data validation library
+https://zod.dev/
+https://github.com/colinhacks/zod
