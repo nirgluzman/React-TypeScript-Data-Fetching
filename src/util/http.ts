@@ -9,7 +9,7 @@ export async function get(url: string) {
 		throw new Error('Failed to fetch data.');
 	}
 
-	const data = (await response.json()) as unknown; // type safty -> 'unknown' forces us to explicity set our own types.
+	const data = (await response.json()) as unknown; // type safety -> 'unknown' forces us to explicity set our own types.
 
 	return data;
 }
