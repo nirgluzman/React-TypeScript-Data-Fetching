@@ -29,9 +29,11 @@ const expectedResponseDataSchema = z.array(rawDataBlogPostSchema);
 
 function App() {
 	const [fetchedPosts, setFetchPosts] = useState<BlogPost[]>();
+	const [isFetching, setIsFetching] = useState<boolean>(false);
 
 	useEffect(() => {
 		async function fetchPosts() {
+			setIsFetching(true);
 			// const rawData = (await get(
 			// 	'https://jsonplaceholder.typicode.com/posts'
 			// )) as RawDataBlogPost[]; // 'as' for type casting.
@@ -75,6 +77,7 @@ function App() {
 				};
 			});
 
+			setIsFetching(false);
 			setFetchPosts(blogPosts);
 		}
 
@@ -84,6 +87,10 @@ function App() {
 	let content: ReactNode;
 	if (fetchedPosts) {
 		content = <BlogPosts posts={fetchedPosts} />;
+	}
+
+	if (isFetching) {
+		content = <p id='loading-fallback'>Fetching posts...</p>;
 	}
 
 	return (
